@@ -1,10 +1,9 @@
-python
-
 import nltk
 import string
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
+import joblib
 
 # Verileri yükle
 with open("soru_cevap.txt", "r") as f:
@@ -27,6 +26,7 @@ def preprocess(text):
     tokens = [token for token in tokens if token not in stopwords]
     # Token'ların birleştirilmesi
     text = " ".join(tokens)
+
 # Verileri doğal dil işleme için uygun hale getir
 corpus = []
 for soru in sorular:
@@ -41,20 +41,5 @@ X = vectorizer.fit_transform(corpus)
 model = MultinomialNB()
 model.fit(X, cevaplar)
 
-# Kullanıcıdan soru al ve modele girdi olarak ver
-soru = input("Soru: ")
-soru = preprocess(soru)
-soru = vectorizer.transform([soru])
-
-# Modelden cevap al
-cevap = model.predict(soru)
-
-# Cevap anahtarından doğru cevabı al
-index = np.where(cevaplar == cevap)[0][0]
-dogru_cevap = cevaplar[index]
-
-# Yanıtın doğruluğunu hesapla
-if cevap == dogru_cevap:
-    print("Doğru!")
-else:
-    print("Yanlış. Doğru cevap: " + dogru_cevap
+# Eğitilmiş modeli kaydet
+joblib.dump(model, "egitilmis_model.joblib")
