@@ -1,0 +1,3 @@
+Nedir 30'un yarısı? : 15
+Bir gun kac saat ? : 24
+Hangi renk daha daha aciktir, siyah mı beyaz mı? : Beyaz
